@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LightWatch</string>
+
+    <!-- Carte d'état -->
+    <string name="label_status">État :</string>
+    <string name="label_monitoring">Surveillance</string>
+    <string name="label_last_update">Dernier relevé :</string>
+    <string name="label_last_alert">Dernière alerte :</string>
+    <string name="status_running">en cours</string>
+    <string name="status_stopped">arrêtée</string>
+    <string name="value_none">aucun</string>
+
+    <!-- Liste -->
+    <string name="luminosity_format">%.0f lx</string>
+    <string name="state_light_on">lumière allumée</string>
+    <string name="state_light_off">lumière éteinte</string>
+    <string name="empty_state">Aucune donnée.\nTirez vers le bas pour rafraîchir.</string>
+
+    <plurals name="summary_sensors">
+        <item quantity="one">%d capteur</item>
+        <item quantity="other">%d capteurs</item>
+    </plurals>
+    <plurals name="summary_lights_on">
+        <item quantity="one">%d lumière allumée</item>
+        <item quantity="other">%d lumières allumées</item>
+    </plurals>
+
+    <!-- Actions et messages -->
+    <string name="action_settings">Réglages</string>
+    <string name="action_retry">Réessayer</string>
+    <string name="error_fetch_failed">Impossible de récupérer les relevés.</string>
+    <string name="settings_not_available">Écran de réglages : T.P. 4.</string>
+
+    <!-- Statut de connection -->
+    <string name="connexion_failure">Connection au serveur impossible.</string>
+
+</resources>

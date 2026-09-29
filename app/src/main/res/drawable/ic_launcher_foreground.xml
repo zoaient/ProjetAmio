@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Ampoule stylisée, contenue dans la zone de sécurité de l'icône adaptative. -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,26 C42.9,26 34,34.9 34,46 c0,7.9 4.6,14.7 11.2,18 L45.2,70 h17.6 l0,-6 C69.4,60.7 74,53.9 74,46 74,34.9 65.1,26 54,26 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M45.2,74 h17.6 v5 h-17.6 z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M47.5,83 h13 v5 h-13 z" />
+
+</vector>

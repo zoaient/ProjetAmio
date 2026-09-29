@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Palette de l'application -->
+    <color name="primary">#00695C</color>
+    <color name="primary_variant">#004D40</color>
+    <color name="secondary">#FFB300</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#000000</color>
+
+    <!-- Couleurs métier : état des lumières -->
+    <color name="light_on">#FFB300</color>
+    <color name="light_off">#78909C</color>
+
+    <color name="ic_launcher_background">#00695C</color>
+
+</resources>

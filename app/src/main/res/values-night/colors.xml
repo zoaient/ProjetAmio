@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Variantes plus lumineuses, pour rester lisibles sur fond sombre. -->
+    <color name="light_on">#FFCA28</color>
+    <color name="light_off">#90A4AE</color>
+
+</resources>

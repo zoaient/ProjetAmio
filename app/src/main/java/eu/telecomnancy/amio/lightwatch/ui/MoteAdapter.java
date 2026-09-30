@@ -60,22 +60,23 @@ public class MoteAdapter extends RecyclerView.Adapter<MoteAdapter.MoteViewHolder
         return new MoteViewHolder(itemView);
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull MoteViewHolder holder, int position) {
         MoteReading reading = readings.get(position);
         Context context = holder.itemView.getContext();
         MoteStateStore.LightState state = store.getState(reading);
         int stateColor;
-        int stateText = 0;
+        int stateText;
 
-
-        if(state== MoteStateStore.LightState.ON) {
+        if (state == MoteStateStore.LightState.ON) {
             stateColor = R.color.light_on;
+            stateText = R.string.state_light_on;
         } else if (state == MoteStateStore.LightState.OFF) {
             stateColor = R.color.light_off;
+            stateText = R.string.state_light_off;
         } else {
             stateColor = R.color.light_unknown;
+            stateText = R.string.state_light_unknown;
         }
 
         holder.moteId.setText(reading.getMoteId());
@@ -86,7 +87,8 @@ public class MoteAdapter extends RecyclerView.Adapter<MoteAdapter.MoteViewHolder
 
 
         holder.moteState.setText(stateText);
-        holder.indicator.setBackgroundTintList(ColorStateList.valueOf(stateColor));
+        holder.indicator.setBackgroundTintList(
+            ColorStateList.valueOf(ContextCompat.getColor(context, stateColor)));
         holder.indicator.setContentDescription(context.getString(stateText));
     }
 

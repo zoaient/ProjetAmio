@@ -1,5 +1,6 @@
 package eu.telecomnancy.amio.lightwatch.service;
 
+/*
 import static android.content.ContentValues.TAG;
 
 import android.app.Notification;
@@ -41,3 +42,5 @@ public class MonitoringService extends Service {
     @Override
     public IBinder onBind(Intent intent) { return null; }
 }
+
+ */

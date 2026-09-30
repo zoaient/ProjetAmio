@@ -16,6 +16,7 @@
     <string name="luminosity_format">%.0f lx</string>
     <string name="state_light_on">lumière allumée</string>
     <string name="state_light_off">lumière éteinte</string>
+    <string name="state_light_unknown">état inconnu</string>
     <string name="empty_state">Aucune donnée.\nTirez vers le bas pour rafraîchir.</string>
 
     <plurals name="summary_sensors">

@@ -11,7 +11,7 @@
     <!-- Couleurs métier : état des lumières -->
     <color name="light_on">#FFB300</color>
     <color name="light_off">#78909C</color>
-    <color name="light_unknown">#f4a460</color>
+    <color name="light_unknown">#370028</color>
 
     <color name="ic_launcher_background">#00695C</color>
 

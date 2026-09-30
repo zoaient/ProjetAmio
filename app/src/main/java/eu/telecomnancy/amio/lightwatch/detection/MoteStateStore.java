@@ -1,7 +1,7 @@
 package eu.telecomnancy.amio.lightwatch.detection;
 
 import eu.telecomnancy.amio.lightwatch.model.MoteReading;
-
+import eu.telecomnancy.amio.lightwatch.detection.LightDetector;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,10 +40,10 @@ public class MoteStateStore {
             MoteReading reading = Readings.get(i);
             MoteState state = states.get(i);
             MoteReading previousReading = state.getReading();
-            if(isComparable(previousReading,reading)){
-                if(isRise(previousReading,reading)){
+            if(LightDetector.isComparable(previousReading,reading)){
+                if(LightDetector.isRise(previousReading,reading)){
                     state.lightState = LightState.ON;
-                }else if(isDrop(previousReading,reading)){
+                }else if(LightDetector.isDrop(previousReading,reading)){
                     state.lightState = LightState.OFF;
                 }
             }

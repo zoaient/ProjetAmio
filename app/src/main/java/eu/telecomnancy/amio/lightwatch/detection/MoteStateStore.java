@@ -30,6 +30,15 @@ public class MoteStateStore {
 
     private final List<MoteState> states = new ArrayList<>();
 
+
+    public LightState getState(MoteReading reading) {
+        for (MoteState state : states) {
+            if (state.getReading().getMoteId().equals(reading.getMoteId())) {
+                return state.getLightState();
+            }
+        }
+        return LightState.UNKNOWN;
+    }
     public void updateStates(List<MoteReading> Readings) {
         if(states.isEmpty()) {
             for(MoteReading reading : Readings) {

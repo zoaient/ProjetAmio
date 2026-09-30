@@ -1,5 +1,6 @@
 package eu.telecomnancy.amio.lightwatch.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import eu.telecomnancy.amio.lightwatch.R;
+import eu.telecomnancy.amio.lightwatch.detection.MoteStateStore;
 import eu.telecomnancy.amio.lightwatch.model.MoteReading;
 
 import java.time.ZoneId;
@@ -38,7 +40,7 @@ public class MoteAdapter extends RecyclerView.Adapter<MoteAdapter.MoteViewHolder
     public static final float PROVISIONAL_THRESHOLD = 200f;
 
     private final List<MoteReading> readings = new ArrayList<>();
-
+    private final MoteStateStore store = new MoteStateStore();
     private final DateTimeFormatter timeFormatter =
             DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 
@@ -58,11 +60,23 @@ public class MoteAdapter extends RecyclerView.Adapter<MoteAdapter.MoteViewHolder
         return new MoteViewHolder(itemView);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull MoteViewHolder holder, int position) {
         MoteReading reading = readings.get(position);
         Context context = holder.itemView.getContext();
-        boolean lightOn = reading.getLuminosity() >= PROVISIONAL_THRESHOLD;
+        MoteStateStore.LightState state = store.getState(reading);
+        int stateColor;
+        int stateText = 0;
+
+
+        if(state== MoteStateStore.LightState.ON) {
+            stateColor = R.color.light_on;
+        } else if (state == MoteStateStore.LightState.OFF) {
+            stateColor = R.color.light_off;
+        } else {
+            stateColor = R.color.light_unknown;
+        }
 
         holder.moteId.setText(reading.getMoteId());
         holder.moteLuminosity.setText(
@@ -70,11 +84,6 @@ public class MoteAdapter extends RecyclerView.Adapter<MoteAdapter.MoteViewHolder
         holder.moteTime.setText(
                 timeFormatter.format(reading.getTimestamp().atZone(ZoneId.systemDefault())));
 
-        // L'état est porté à la fois par la couleur et par du texte : un indicateur
-        // uniquement coloré n'est pas accessible.
-        int stateText = lightOn ? R.string.state_light_on : R.string.state_light_off;
-        int stateColor = ContextCompat.getColor(
-                context, lightOn ? R.color.light_on : R.color.light_off);
 
         holder.moteState.setText(stateText);
         holder.indicator.setBackgroundTintList(ColorStateList.valueOf(stateColor));

@@ -73,6 +73,91 @@ public class MoteStateStoreTest {
         assertEquals(afterGap, store.getLastReading("mote-1"));
     }
 
+
+    @Test
+    public void riseAboveAmplitudeTurnsLightOn() {
+        MoteStateStore store = new MoteStateStore();
+
+        store.processReadings(Collections.singletonList(reading("mote-1", 10, 0)));
+
+        MoteStateStore.Transitions transitions = store.processReadings(
+                Collections.singletonList(reading("mote-1", 200, 100)));
+
+        assertEquals(Collections.singleton("mote-1"), transitions.getTurnedOn());
+        assertTrue(transitions.getTurnedOff().isEmpty());
+        assertEquals(MoteStateStore.LightState.ON, store.getLightState("mote-1"));
+    }
+
+    @Test
+    public void smallRiseDoesNotTriggerAnyEvent() {
+        MoteStateStore store = new MoteStateStore();
+
+        store.processReadings(Collections.singletonList(reading("mote-1", 100, 0)));
+
+        MoteStateStore.Transitions transitions = store.processReadings(
+                Collections.singletonList(reading("mote-1", 101, 100)));
+
+        assertTrue(transitions.getTurnedOn().isEmpty());
+        assertTrue(transitions.getTurnedOff().isEmpty());
+        assertEquals(MoteStateStore.LightState.UNKNOWN, store.getLightState("mote-1"));
+    }
+
+    @Test
+    public void dropAboveAmplitudeTurnsLightOff() {
+        MoteStateStore store = new MoteStateStore();
+
+        store.processReadings(Collections.singletonList(reading("mote-1", 100, 0)));
+
+        MoteStateStore.Transitions transitions = store.processReadings(
+                Collections.singletonList(reading("mote-1", 0, 100)));
+
+        assertTrue(transitions.getTurnedOn().isEmpty());
+        assertEquals(Collections.singleton("mote-1"), transitions.getTurnedOff());
+        assertEquals(MoteStateStore.LightState.OFF, store.getLightState("mote-1"));
+    }
+
+    @Test
+    public void firstReadingIsolatedDoesNotTriggerEventAndLeavesStateUnknown() {
+        MoteStateStore store = new MoteStateStore();
+
+        MoteStateStore.Transitions transitions = store.processReadings(
+                Collections.singletonList(reading("mote-1", 42, 0)));
+
+        assertTrue(transitions.getTurnedOn().isEmpty());
+        assertTrue(transitions.getTurnedOff().isEmpty());
+        assertEquals(MoteStateStore.LightState.UNKNOWN, store.getLightState("mote-1"));
+    }
+
+    @Test
+    public void largeRiseAfterSeveralHoursDoesNotTriggerEvent() {
+        MoteStateStore store = new MoteStateStore();
+
+        store.processReadings(Collections.singletonList(reading("mote-1", 10, 0)));
+
+        long severalHoursInMillis = 5L * 60L * 60L * 1000L;
+        MoteStateStore.Transitions transitions = store.processReadings(
+                Collections.singletonList(reading("mote-1", 200, severalHoursInMillis)));
+
+        assertTrue(transitions.getTurnedOn().isEmpty());
+        assertTrue(transitions.getTurnedOff().isEmpty());
+        assertEquals(MoteStateStore.LightState.UNKNOWN, store.getLightState("mote-1"));
+    }
+
+    @Test
+    public void outOfOrderReadingsDoNotTriggerTransition() {
+        MoteStateStore store = new MoteStateStore();
+
+        store.processReadings(Collections.singletonList(reading("mote-1", 20, 0)));
+
+        MoteStateStore.Transitions transitions = store.processReadings(Arrays.asList(
+                reading("mote-1", 150, 2000),
+                reading("mote-1", 40, 1000)
+        ));
+
+        assertTrue(transitions.getTurnedOn().isEmpty());
+        assertTrue(transitions.getTurnedOff().isEmpty());
+        assertEquals(MoteStateStore.LightState.UNKNOWN, store.getLightState("mote-1"));
+    }
     private static MoteReading reading(String moteId, float luminosity, long millis) {
         return new MoteReading(moteId, luminosity, Instant.ofEpochMilli(millis));
     }

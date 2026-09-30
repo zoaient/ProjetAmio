@@ -25,6 +25,7 @@ import eu.telecomnancy.amio.lightwatch.R;
 import eu.telecomnancy.amio.lightwatch.data.FakeSensorDataSource;
 import eu.telecomnancy.amio.lightwatch.data.IotLabSensorDataSource;
 import eu.telecomnancy.amio.lightwatch.data.SensorDataSource;
+import eu.telecomnancy.amio.lightwatch.detection.MoteStateStore;
 import eu.telecomnancy.amio.lightwatch.model.MoteReading;
 
 import java.time.LocalTime;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     /** Exécuteur des appels bloquants (ici la source simulée, le réseau au T.P. 2). */
     private ExecutorService io;
 
+    private MoteStateStore store;
+
     /** Permet de revenir sur le thread de l'interface depuis une tâche de fond. */
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         chipLightsOn = findViewById(R.id.chipLightsOn);
         swipeRefresh = findViewById(R.id.swipeRefresh);
         recyclerView = findViewById(R.id.recyclerView);
+        store =  new MoteStateStore();
 
         // Le thème hérite de NoActionBar : c'est notre MaterialToolbar qui tient
         // ce rôle. Sans cet appel, le menu d'options n'aurait nulle part où s'afficher.
@@ -184,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         lastUpdateValue.setText(timeFormatter.format(LocalTime.now()));
         emptyView.setVisibility(sorted.isEmpty() ? View.VISIBLE : View.GONE);
         swipeRefresh.setRefreshing(false);
+        store.updateStates(readings);
     }
 
     private void onReadingsFailed() {
@@ -197,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateSummary(List<MoteReading> readings) {
         int lightsOn = 0;
         for (MoteReading reading : readings) {
-            if (reading.getLuminosity() >= MoteAdapter.PROVISIONAL_THRESHOLD) {
+            if (store.getState(reading) == MoteStateStore.LightState.ON) {
                 lightsOn++;
             }
         }

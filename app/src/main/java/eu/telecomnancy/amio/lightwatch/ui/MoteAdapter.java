@@ -85,7 +85,7 @@ public class MoteAdapter extends RecyclerView.Adapter<MoteAdapter.MoteViewHolder
                 timeFormatter.format(reading.getTimestamp().atZone(ZoneId.systemDefault())));
 
 
-        holder.moteState.setText(stateText);
+        holder.moteState.setText(String.valueOf(stateText));
         holder.indicator.setBackgroundTintList(ColorStateList.valueOf(stateColor));
         holder.indicator.setContentDescription(context.getString(stateText));
     }
